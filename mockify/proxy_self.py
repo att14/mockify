@@ -2,8 +2,8 @@
 """Enables the mocking of attributes that reside on instances of a test
 case from a scope where the instance does not yet exist.
 
-``proxy_self`` can be used the same as you would use ``self`` within the
-context of a ``setup_teardown``.
+Attribute accesss on ``proxy_self`` in the body of a class is designed to model
+attribute access on self in the context of a ``setup_teardown``.
 
 .. code-block:: python
 
@@ -94,25 +94,25 @@ instance variables of your test case, you can use the ``patch_setup`` method of
 from .patch import patch
 
 
-class ProxySelfMeta(type):
-    """Allows ``proxy_self`` to have the interface where it does not need to be
-    instantiated, but calls to ``__getattr__`` are recorded for use when
-    creating the ``setup_teardown``.
-
-    More specifically, it allows ``proxy_self`` to have an unbound
-    ``__getattr__`` and a bound one. This actually allows the first call to
-    ``__getattr__`` to instantiate and return a ``proxy_self``. While,
-    subsequent calls to ``__getattr__`` are handled by the actual instance of
-    ``proxy_self``, not ``ProxySelfMeta``.
-    """
-
-    def __getattr__(cls, attr):
-        return cls(attr)
-
 
 class proxy_self(object):
 
-    __metaclass__ = ProxySelfMeta
+    class __metaclass__(type):
+        """Allows ``proxy_self`` to have the interface where it does not need to be
+        instantiated, but calls to ``__getattr__`` are recorded for use when
+        creating the ``setup_teardown``.
+
+        More specifically, it allows ``proxy_self`` to have an unbound
+        ``__getattr__`` and a bound one. This actually allows the first call to
+        ``__getattr__`` to instantiate and return a ``proxy_self``. While,
+        subsequent calls to ``__getattr__`` are handled by the actual instance of
+        ``proxy_self``, not ``ProxySelfMeta``.
+        """
+
+        def __getattr__(cls, attr):
+            return cls(attr)
+
+
 
     def __init__(self, *args):
         self.__names = args

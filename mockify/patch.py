@@ -172,23 +172,20 @@ class PatchName(Patch):
         return mock.patch(*self.args, **self.kwargs)
 
 
-class patch_base_meta(type):
-
-    def __call__(cls, target, *args, **kwargs):
-        # This isinstance check would not work if you wanted to mock a method
-        # on a string instance. You probably don't want to do this anyway, but
-        # if you really need to, just use `.object` explicitly.
-        if isinstance(target, str):
-            return cls.name(target, *args, **kwargs)
-        elif hasattr(target, 'get_target_'):
-            return cls.proxy(target, *args, **kwargs)
-        else:
-            return cls.object(target, *args, **kwargs)
-
-
 class patch_base(object):
 
-    __metaclass__ = patch_base_meta
+    class __metaclass__(type):
+
+        def __call__(cls, target, *args, **kwargs):
+            # This isinstance check would not work if you wanted to mock a method
+            # on a string instance. You probably don't want to do this anyway, but
+            # if you really need to, just use `.object` explicitly.
+            if isinstance(target, str):
+                return cls.name(target, *args, **kwargs)
+            elif hasattr(target, 'get_target_'):
+                return cls.proxy(target, *args, **kwargs)
+            else:
+                return cls.object(target, *args, **kwargs)
 
     @classmethod
     def name(cls, *args, **kwargs):
