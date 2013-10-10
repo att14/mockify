@@ -87,7 +87,7 @@ instance variables of your test case, you can use the ``patch_setup`` method of
         def work(self):
             return 'baz'
 
-        @T.proxy_self.SomeObject.work.patch_setup()
+        @proxy_self.SomeObject.work.patch_setup()
         def patch_work(self, mock_work):
             mock_work.return_value = self.work
 """
@@ -111,8 +111,6 @@ class proxy_self(object):
 
         def __getattr__(cls, attr):
             return cls(attr)
-
-
 
     def __init__(self, *args):
         self.__names = args

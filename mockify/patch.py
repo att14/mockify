@@ -44,7 +44,7 @@ type should be used. That is, the addition of ``.object`` or ``.name`` after
 
 .. code-block::python
 
-        @T.patch(SomeClass, 'other_method', return_value=5)
+        @patch(SomeClass, 'other_method', return_value=5)
         def test_business_add_again(self, patched_other_method):
             T.assert_equal(SomeClass.other_method(), 5)
             patched_other_method.assert_called_once_with()
@@ -67,7 +67,7 @@ defined on the instance of the test case.
 
 .. code-block::python
 
-        @T.patch.setup(SomeClass, 'some_instance')
+        @patch.setup(SomeClass, 'some_instance')
         def mock_instance(self, mock_instance):
             mock_instance.method1.return_value = self.busines_id
 """
