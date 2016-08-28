@@ -1,6 +1,8 @@
 mockify
 =======
 
+<a href="https://codeclimate.com/github/att14/mockify"><img src="https://codeclimate.com/github/att14/mockify/badges/gpa.svg" /></a>
+
 A compatibility layer between [Testify](https://github.com/Yelp/Testify) and
 [mock](http://www.voidspace.org.uk/python/mock/).
 
